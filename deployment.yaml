@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: your-deployment
+  labels:
+    app: kube-jenkins-demo
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: kube-jenkins-demo
+  template:
+    metadata:
+      labels:
+        app: kube-jenkins-demo
+    spec:
+      containers:
+        - name: kube-jenkins-demo
+          image: IMAGE_PLACEHOLDER
+          ports:
+            - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kube-jenkins-service
+spec:
+  selector:
+    app: kube-jenkins-demo
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+  type: LoadBalancer
